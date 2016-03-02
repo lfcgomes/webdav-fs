@@ -12,7 +12,11 @@
 				isDirectory: function() {
 					return itemInfo.type === "directory";
 				},
-				mtime: new Date(itemInfo.lastmod)
+				filename: itemInfo.filename,
+				basename: itemInfo.basename,
+				size: itemInfo.size,
+				mtime: new Date(itemInfo.lastmod),
+				mime: itemInfo.mime
 			};
 		}
 
