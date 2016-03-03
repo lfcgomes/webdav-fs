@@ -32,8 +32,28 @@
 					test.ok(files.indexOf("index.txt") >= 0, "The directory should contain index.txt");
 					test.done();
 				});
+			},
+			testGetsContentsWithExtended: function(test){
+				wfs.readdir("/", {extended: true}, function(err, files) {
+					test.ok(!err, "There should be no error getting contents");
+					test.equal(files.length, 2);
+					test.ok(files[0].filepath);
+					test.ok(files[0].basename);
+					test.ok(files[0].escapedfilepath);
+					test.ok(files[0].mtime);
+					test.ok(files[0].size);
+					test.done();
+				});
+			},
+			testGetsContentsWithExtendedEqualToFalse: function(test){
+				wfs.readdir("/", {extended: false}, function(err, files) {
+					test.ok(!err, "There should be no error getting contents");
+					test.equal(files.length, 2);
+					test.ok(files.indexOf("index.txt") >= 0, "The directory should contain index.txt");
+					test.ok(files.indexOf("bin.dat") >= 0, "The directory should contain bin.dat");
+					test.done();
+				});
 			}
-
 		}
 
 	};

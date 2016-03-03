@@ -5,7 +5,8 @@
 	module.exports = {
 
 		createStat: function(itemInfo) {
-			return {
+			var obj;
+			obj = {
 				isFile: function() {
 					return itemInfo.type === "file";
 				},
@@ -15,9 +16,12 @@
 				filepath: itemInfo.filename,
 				basename: itemInfo.basename,
 				size: itemInfo.size,
-				mtime: new Date(itemInfo.lastmod),
-				mime: itemInfo.mime
+				mtime: new Date(itemInfo.lastmod)
 			};
+			if(itemInfo.mime) obj.mime = itemInfo.mime;
+			if(itemInfo.escapedfilepath) obj.escapedfilepath = itemInfo.escapedfilepath;
+			
+			return obj;
 		}
 
 	};

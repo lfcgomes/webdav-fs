@@ -36,25 +36,27 @@
 				propstatBro = Bro(responseBro.iCanHaz1("d:propstat.0", "D:propstat.0")),
 				props = propstatBro.iCanHaz1("d:prop.0", "D:prop.0"),
 				propsBro = Bro(props);
-			//console.log(JSON.stringify(props, undefined, 4));
-			var filename = processDirectoryResultFilename(
+			// console.log(JSON.stringify(props, undefined, 4));
+			var escapedFilename = processDirectoryResultFilename(
 					path,
 					processXMLStringValue(responseBro.iCanHaz1("d:href", "D:href"))
 				).trim(),
 				resourceType = processXMLStringValue(propsBro.iCanHaz1("d:resourcetype", "D:resourcetype")),
 				itemType = (resourceType.indexOf("d:collection") >= 0 || resourceType.indexOf("D:collection") >= 0) ?
 					"directory" : "file";
-			if (filename.length <= 0) {
+			if (escapedFilename.length <= 0) {
 				return;
 			}
-			if ((targetOnly && filename !== path) || (!targetOnly && filename === path)) {
+			if ((targetOnly && escapedFilename !== path) || (!targetOnly && escapedFilename === path)) {
 				// skip self or only self
 				return;
 			}
-			filename = querystring.unescape("/" + filename);
+
+			var filename = querystring.unescape("/" + escapedFilename);
 			var item = {
 					filename: filename,
 					basename: pathTools.basename(filename),
+					escapedfilepath: escapedFilename,
 					lastmod: processXMLStringValue(propsBro.iCanHaz1("d:getlastmodified", "D:getlastmodified")),
 					size: parseInt(processXMLStringValue(propsBro.iCanHaz1("d:getcontentlength", "D:getcontentlength")) || "0", 10),
 					type: itemType

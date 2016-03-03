@@ -49,14 +49,25 @@
 			 * Maps -> fs.readdir
 			 * @see https://nodejs.org/api/fs.html#fs_fs_readdir_path_callback
 			 * @param {String} path The path to read at
+			 * @param {Object} json with optional params
+			 * @param {Object} opts.extended: If true, then readder function returns all the information. 
+			 otherwise, it only returns the files basename
 			 * @param {Function} callback Callback: function(error, files)
 			 */
-			readdir: function(path, callback) {
+			readdir: function(path, opts, callback) {
+				if(typeof opts === 'function')
+					callback = opts;
 				client.getDir(endpoint, path)
 					.then(function(dirData) {
-						(callback)(null, dirData.map(function(dirEntry) {
-							return dirEntry.basename;
-						}));
+						if(typeof opts === 'function' || !opts.extended){
+							(callback)(null, dirData.map(function(dirEntry) {
+								return dirEntry.basename;
+							}));
+						}else{
+							(callback)(null, dirData.map(function(dirEntry) {
+								return processing.createStat(dirEntry);
+							}));
+						}
 					})
 					.catch(function(err) {
 						(callback)(err, null);
