@@ -3,8 +3,8 @@
 // Using authentication:
 var wfs = require('./source/index.js')(
         'http://owncloud-31vh75j1.cloudapp.net/owncloud/remote.php/webdav/',
-        'luis',
-        'luis123'
+        'user',
+        'password'
     );
 
 // esta%20%c3%a7%c3%a3o%c3%a3o%c3%81%c3%80%c3%a0%c3%a0
