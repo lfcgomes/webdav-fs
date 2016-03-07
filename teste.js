@@ -29,7 +29,7 @@ var options = {
     hostname: 'owncloud-31vh75j1.cloudapp.net',
     port: '80',
     path: '/owncloud/remote.php/webdav/paper2.pdf',
-    auth: 'luis:luis123',
+    auth: 'luis:password',
     method: 'PUT'
 };
 
