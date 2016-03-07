@@ -69,20 +69,28 @@
             },
 
             testWriteFile: function(test) {
+                console.log('1');
                 var targetFile = this.testFileName,
                     sourceFile = this.testSourceFile;
+                console.log('sourceFile ', sourceFile);
+                console.log('targetFile ', targetFile);
                 fs.readFile(sourceFile, "binary", function(err, data) {
                     if (err) {
                         throw err;
                     }
+                    console.log('2');
                     wfs.writeFile("test.dat", data, "binary", function(err) {
                         if (err) {
+                            console.log(err);
                             throw err;
                         }
+                        console.log('3');
+
                         fs.readFile(targetFile, "binary", function(err, finalData) {
                             if (err) {
                                 throw err;
                             }
+                            console.log('aqui');
                             test.ok(finalData instanceof Buffer, "Data is a buffer");
                             test.ok(finalData.equals && finalData.equals(data),
                                 "Data should be equal after writing");

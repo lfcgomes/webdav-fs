@@ -7,7 +7,9 @@
 		querystring = require("querystring"),
 		pathTools = require("path"),
 		Bro = require("./brototype.js"),
-		Streamifier = require("streamifier");
+		Streamifier = require("streamifier"),
+        url = require('url'),
+        Req = require('./requests');
 
 	/**
 	 * Fetch raw data from a node-fetch response
@@ -206,22 +208,27 @@
 				mime = "text/plain";
 			} else if (encoding === "binary") {
 				mime = "application/octet-stream";
-				if (typeof data !== "string") {
-					// Not a string, make a readable stream
-					data = Streamifier.createReadStream(data);
-				}
+				// if (typeof data !== "string") {
+				// 	// Not a string, make a readable stream
+				// 	data = Streamifier.createReadStream(data);
+				// }
 			} else {
 				throw new Error("Unknown or unspecified encoding");
 			}
 			path = sanitiseRemotePath(path);
-			return fetch(auth.url + path, {
-					method: "PUT",
-					headers: {
-						"Content-Type": mime
-					},
-					body: data
-				})
-				.then(handleResponseError);
+            
+            var dest = url.parse(auth.url + path);
+            dest.method = 'PUT';
+
+            // var destination = {
+            //     method: "PUT",
+            //     headers: {
+            //         "Content-Type": mime
+            //     },
+            //     body: data
+            // };
+
+            return Req.request(dest, data);
 		},
 
 		putDir: function(auth, path) {

@@ -124,6 +124,7 @@
 			},
 
 			writeFile: function(/* filename, data[, encoding], callback */) {
+				console.log('index 1');
 				var args = Array.prototype.slice.call(arguments),
 					argc = args.length;
 				if (argc <= 2) {
@@ -138,15 +139,26 @@
 				} else if (argc >= 4 && typeof args[3] === "function") {
 					callback = args[3];
 				}
+				console.log('index 2');
 				client.putFile(endpoint, path, data, encoding)
-					.then(
-						function() {
-							executeCallbackAsync(callback, [null]);
-						},
-						function(err) {
-							executeCallbackAsync(callback, [err]);
-						}
-					);
+				.then(function(){
+					console.log('index 3');
+					executeCallbackAsync(callback, [null]);
+				}).catch(function(err){
+					console.log(err);
+					console.log('index 4 - err');
+					executeCallbackAsync(callback, [err]);
+				});
+
+				// client.putFile(endpoint, path, data, encoding)
+				// 	.then(
+				// 		function() {
+				// 			executeCallbackAsync(callback, [null]);
+				// 		},
+				// 		function(err) {
+				// 			executeCallbackAsync(callback, [err]);
+				// 		}
+				// 	);
 			}
 
 		};
